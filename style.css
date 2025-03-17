@@ -49,6 +49,13 @@
     --hover-blue: rgb(123, 0, 255);
 }
 
+a {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
 .body {
     font-family: "GenshinImpactZhLv1", sans-serif;
     margin: 0;
@@ -177,6 +184,10 @@ h1 {
     padding: 1rem 1rem;
     background-color: rgba(255, 255, 255, 0.7);
     overflow: auto; /* 当内容过多时显示滚动条 */
+    word-break: break-word;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    white-space: normal;
 }
 
 .textbox:hover {
@@ -275,19 +286,19 @@ h1 {
     .nav-item {
         margin-right: 0;
         margin-bottom: 25px; /* 增加导航项之间的垂直间距 */
-    }
-
-    .nav-item a {
-        font-size: 16px; /* 调整字体大小 */
+        font-size: 18px; /* 调整字体大小 */
         padding: 10px 20px; /* 增加点击区域 */
     }
 
     .web-links{
         display: flex;
         flex-direction: column; /* 垂直方向排列 */
+        font-size: 18px; /* 调整字体大小 */
+        padding: 10px 20px; /* 增加点击区域 */
     }
 
     .textbox {
-        width: 100%;
+        width: 100%; /*占满页面*/
+        font-size: 18px; /* 调整字体大小 */
     }
 }
