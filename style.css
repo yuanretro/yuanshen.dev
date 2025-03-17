@@ -286,6 +286,9 @@ h1 {
     .nav-item {
         margin-right: 0;
         margin-bottom: 25px; /* 增加导航项之间的垂直间距 */
+    }
+
+    .nav-item a {
         font-size: 18px; /* 调整字体大小 */
         padding: 10px 20px; /* 增加点击区域 */
     }
@@ -293,6 +296,9 @@ h1 {
     .web-links{
         display: flex;
         flex-direction: column; /* 垂直方向排列 */
+    }
+
+    .web-links a {
         font-size: 18px; /* 调整字体大小 */
         padding: 10px 20px; /* 增加点击区域 */
     }
