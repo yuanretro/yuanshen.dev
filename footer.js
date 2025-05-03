@@ -1,4 +1,4 @@
-currentPath = window.location.pathname;
+const currentPath = window.location.pathname;  // 自动获取当前路径
 let hideTimeout;
 
 // 显示子菜单
@@ -18,12 +18,12 @@ function hideMenu() {
 
 // 点击切换语言时候跳转到对应页面
 function changeLang() {
-    const parts = currentPath.split("/"); // 使用 / 分割字符串
-    const lastPart = parts[parts.length - 1]; // 获取最后一段
-    if (currentPath.includes("en")) {
-        window.location.href = `https://www.yuanshen.dev/${lastPart}`;
+    const parts = currentPath.split("/");          // 使用 / 分割字符串
+    const lastPart = parts[parts.length - 1];      // 获取最后一段
+    if (currentPath.includes("/en/")) {
+        window.location.href = `/${lastPart}`;
     } else {
-        window.location.href = `https://www.yuanshen.dev/en/${lastPart}`;
+        window.location.href = `/en/${lastPart}`;
     }
 }
 
