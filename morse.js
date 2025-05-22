@@ -63,7 +63,7 @@ let currentIndex = 0; // 当前播放的莫尔斯符号的索引
 let words = []; // 转换后的莫尔斯电码序列
 let dotDuration, dashDuration, elementGap, letterGap, wordGap; // 各种间隔和时长
 let currentFrequency = 600; // 当前音频频率，默认为600Hz
-let currentPath = window.location.pathname;
+const currentPath2 = window.location.pathname;
 
 // 创建并初始化AudioContext
 function createAudioContext() {
@@ -166,7 +166,7 @@ function preparation() {
 
     // 验证输入是否合法
     if (!validateInput(textInput)) {
-        if (currentPath.includes("en")) {
+        if (currentPath2.includes("/en/")) {
             document.getElementById("error").textContent = "Invalid input! Please use only letters, numbers and following symbols: .,?'!()/&:;=+-_\"$@";
         } else {
             document.getElementById("error").textContent = "输入包含无效字符，请使用字母、数字和以下特殊符号：.,?'!()/&:;=+-_\"$@";

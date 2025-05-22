@@ -27,6 +27,30 @@ function changeLang() {
     }
 }
 
+function adjustFooterMargin() {
+    const body = document.body;
+    const html = document.documentElement;
+    const footer = document.querySelector('.site-footer');
+
+    // 计算页面内容高度（body或html的scrollHeight）
+    const contentHeight = Math.max(body.scrollHeight, html.scrollHeight);
+    // 视口高度
+    const viewportHeight = window.innerHeight;
+
+    if (contentHeight <= viewportHeight) {
+        // 内容不满屏幕，底部推开
+        footer.classList.remove("footer-margin-2rem");
+        footer.classList.add('footer-margin-auto');
+    } else {
+        // 内容超过屏幕，高度自动，不推开
+        footer.classList.remove('footer-margin-auto');
+        footer.classList.add("footer-margin-2rem");
+    }
+}
+
+// 初始运行一次
+adjustFooterMargin();
+
 //页面加载时调用这个方法
 window.onload = function () {
     //随机选取一个背景图
@@ -42,3 +66,6 @@ window.onload = function () {
     bodyElement.style.animation = "blurFadeIn 1s ease-out forwards";
     bodyElement.style.webkitAnimation = "blurFadeIn 1s ease-out forwards";
 }
+
+// 监听窗口大小变化时也运行
+window.addEventListener('resize', adjustFooterMargin);

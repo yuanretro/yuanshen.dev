@@ -2,7 +2,7 @@
 const currentPath1 = window.location.pathname;
 let scoreName, gameOverMsg;
 // 根据页面语言动态加载不同的字符串
-if (currentPath1.includes("en")) {
+if (currentPath1.includes("/en/")) {
     scoreName = "Score: ";
     gameOverMsg = "Oh no! Game over!";
 } else {

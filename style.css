@@ -140,7 +140,7 @@ a {
     cursor: pointer; /* 鼠标指针样式 */
     transition: background-color 0.3s ease; /* 背景颜色的过渡效果 */
     width: 100px;
-    height: 50px;
+    height: 40px;
     box-shadow: 5px 5px 10px var(--box-shadow);
 }
 
@@ -218,9 +218,17 @@ h1 {
     color: black;
     padding: 20px 10px;
     text-align: center;
-    margin-top: auto; /* 确保footer位于页面底部 */
     box-shadow: 5px 5px 10px var(--box-shadow);
     border-radius: 15px;
+}
+
+/* 只有添加了这个类时才使用 margin-top: auto */
+.site-footer.footer-margin-auto {
+    margin-top: auto;
+}
+
+.site-footer.footer-margin-2rem {
+    margin-top: 2rem;
 }
 
 .site-footer:hover {
