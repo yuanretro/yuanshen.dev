@@ -20,6 +20,19 @@
     }
 }
 
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+        -webkit-transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        -webkit-transform: translateX(0);
+        opacity: 1;
+    }
+}
+
 /*兼容Safari的代码*/
 @-webkit-keyframes blurFadeIn {
     0% {
@@ -67,7 +80,7 @@ a {
 
 .navi {
     background-color: var(--default-green);
-    padding: 20px 40px;
+    padding: 1.25rem 2.5rem;
     box-shadow: 5px 5px 10px var(--box-shadow);
     border-radius: 15px;
 }
@@ -117,10 +130,34 @@ a {
 
 /* 子菜单 */
 .submenu-container {
+    display: flex;
+    flex-direction: column;
     position: absolute;
-    background: var(--hover-green);
+    background: var(--default-green);
     border-radius: 15px;
     box-shadow: 5px 5px 10px var(--box-shadow);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.submenu-container:hover {
+    background-color: var(--hover-green);
+    transition: 0.5s;
+    border-radius: 0;
+}
+
+.submenu-container:not(:hover) {
+    background-color: var(--default-green);
+    transition: 0.5s;
+    border-radius: 15px;
+}
+
+.submenu-container.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 .submenu-item {

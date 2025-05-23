@@ -4,15 +4,15 @@ let hideTimeout;
 // 显示子菜单
 function showMenu() {
     clearTimeout(hideTimeout); // 清除隐藏的计时器
-    const submenu = document.getElementById('submenu-container');
-    submenu.style.display = 'block';
+    const submenu = document.querySelector('.submenu-container');
+    submenu.classList.add('show'); // 添加过渡类
 }
 
 // 隐藏子菜单
 function hideMenu() {
+    const submenu = document.querySelector('.submenu-container');
     hideTimeout = setTimeout(function () {
-        const submenu = document.getElementById('submenu-container');
-        submenu.style.display = 'none';
+        submenu.classList.remove('show'); // 移除过渡类，触发隐藏动画
     }, 300); // 延迟 300 毫秒隐藏菜单
 }
 
@@ -67,7 +67,7 @@ window.onload = function () {
     backgroundURL = `url('/img/bg${getRandomInt(1, 11)}.webp') no-repeat center center fixed`;
     bodyElement.style.background = backgroundURL;
     bodyElement.style.backgroundSize = "cover";
-    bodyElement.style.animation = "blurFadeIn 0.5s ease-out forwards";
-    bodyElement.style.webkitAnimation = "blurFadeIn 0.5s ease-out forwards";
+    bodyElement.style.animation = "slideInLeft 0.5s ease-out forwards";
+    bodyElement.style.webkitAnimation = "slideInLeft 0.5s ease-out forwards";
 }
 
