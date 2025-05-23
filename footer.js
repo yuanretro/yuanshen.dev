@@ -67,7 +67,7 @@ window.onload = function () {
     backgroundURL = `url('/img/bg${getRandomInt(1, 11)}.webp') no-repeat center center fixed`;
     bodyElement.style.background = backgroundURL;
     bodyElement.style.backgroundSize = "cover";
-    bodyElement.style.animation = "blurFadeIn 1s ease-out forwards";
-    bodyElement.style.webkitAnimation = "blurFadeIn 1s ease-out forwards";
+    bodyElement.style.animation = "blurFadeIn 0.5s ease-out forwards";
+    bodyElement.style.webkitAnimation = "blurFadeIn 0.5s ease-out forwards";
 }
 

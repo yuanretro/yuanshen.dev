@@ -139,7 +139,7 @@ a {
     border-radius: 10px; /* 小的圆角 */
     cursor: pointer; /* 鼠标指针样式 */
     transition: background-color 0.3s ease; /* 背景颜色的过渡效果 */
-    width: 100px;
+    width: auto;
     height: 40px;
     box-shadow: 5px 5px 10px var(--box-shadow);
 }
