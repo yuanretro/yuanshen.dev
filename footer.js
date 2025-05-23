@@ -48,8 +48,12 @@ function adjustFooterMargin() {
     }
 }
 
-// 初始运行一次
-adjustFooterMargin();
+document.addEventListener('DOMContentLoaded', function () {
+    // 初始运行一次
+    adjustFooterMargin();
+    // 监听窗口大小变化时也运行
+    window.addEventListener('resize', adjustFooterMargin);
+});
 
 //页面加载时调用这个方法
 window.onload = function () {
@@ -67,5 +71,3 @@ window.onload = function () {
     bodyElement.style.webkitAnimation = "blurFadeIn 1s ease-out forwards";
 }
 
-// 监听窗口大小变化时也运行
-window.addEventListener('resize', adjustFooterMargin);
