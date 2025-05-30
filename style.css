@@ -107,7 +107,7 @@ a {
 }
 
 .nav-item {
-    margin-right: 25px;
+    margin-right: clamp(25px, 3vw, 60px);
 }
 
 .language {
@@ -314,7 +314,7 @@ h1 {
 }
 
 /* 响应式布局：针对屏幕宽度小于1090px的设备（如手机） */
-@media (max-width: 1090px) {
+@media (max-width: 810px) {
     .language {
         position: static;
     }
@@ -327,6 +327,7 @@ h1 {
     .navi ul {
         flex-direction: column; /* 导航项垂直排列 */
         align-items: center; /* 居中对齐 */
+        transition: all 0.3s ease;
     }
 
     .nav-item {

@@ -1,19 +1,29 @@
-const currentPath = window.location.pathname;  // 自动获取当前路径
-let hideTimeout;
+const currentPath = window.location.pathname;
+const hideTimeouts = new Map();  // 用 Map 来保存每个 submenu 的定时器
 
 // 显示子菜单
-function showMenu() {
-    clearTimeout(hideTimeout); // 清除隐藏的计时器
-    const submenu = document.querySelector('.submenu-container');
-    submenu.classList.add('show'); // 添加过渡类
+function showMenu(submenuID) {
+    const submenu = document.querySelector('#submenu-container' + submenuID);
+
+    // 清除该 submenu 的隐藏计时器
+    if (hideTimeouts.has(submenuID)) {
+        clearTimeout(hideTimeouts.get(submenuID));
+        hideTimeouts.delete(submenuID);
+    }
+
+    submenu.classList.add('show');
 }
 
 // 隐藏子菜单
-function hideMenu() {
-    const submenu = document.querySelector('.submenu-container');
-    hideTimeout = setTimeout(function () {
-        submenu.classList.remove('show'); // 移除过渡类，触发隐藏动画
-    }, 300); // 延迟 300 毫秒隐藏菜单
+function hideMenu(submenuID) {
+    const submenu = document.querySelector('#submenu-container' + submenuID);
+
+    const timeout = setTimeout(function () {
+        submenu.classList.remove('show');
+        hideTimeouts.delete(submenuID);  // 移除对应的定时器
+    }, 300);
+
+    hideTimeouts.set(submenuID, timeout);
 }
 
 // 点击切换语言时候跳转到对应页面

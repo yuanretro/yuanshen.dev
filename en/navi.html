@@ -1,15 +1,19 @@
 <ul>
     <li class="nav-item"><a href="/en/index.html">Main</a></li>
     <li class="nav-item"><a href="/en/music.html">Music</a></li>
-    <li class="nav-item"><a href="/en/pinball.html">JS Pinball Game</a></li>
-    <li class="nav-item"><a href="/en/morse.html">Morse Code</a></li>
-    <li class="nav-item"><a
-            href="/en/crtirgen.html">中国铁路行程信息提示生成器(CRTIRGen)</a></li>
+    <li class="nav-item" onmouseover="showMenu(1)" onmouseout="hideMenu(1)">
+        <a href="#">Projects</a>
+        <ul class="submenu-container" id="submenu-container1">
+            <li class="submenu-item"><a href="/en/pinball.html">JS Pinball Game</a></li>
+            <li class="submenu-item"><a href="/en/morse.html">Morse Code</a></li>
+            <li class="submenu-item"><a href="/en/crtirgen.html">中国铁路行程信息提示生成器(CRTIRGen)</a></li>
+        </ul>
+    </li>
     <li class="nav-item"><a href="/en/articles.html">Articles</a></li>
     <li class="nav-item"><a href="/en/about.html">About</a></li>
-    <li class="nav-item submenu" onmouseover="showMenu()" onmouseout="hideMenu()">
+    <li class="nav-item" onmouseover="showMenu(2)" onmouseout="hideMenu(2)">
         <a href="#">Travel</a>
-        <ul class="submenu-container" id="submenu-container">
+        <ul class="submenu-container" id="submenu-container2">
             <li class="submenu-item"><a href="https://www.travellings.cn/go.html">Travellings.cn</a></li>
             <li class="submenu-item"><a href="https://travel.moe/go.html">Travel.moe</a></li>
         </ul>

@@ -1,15 +1,19 @@
 <ul>
     <li class="nav-item"><a href="/">主页</a></li>
     <li class="nav-item"><a href="/music.html">音乐</a></li>
-    <li class="nav-item"><a href="/pinball.html">JS弹球</a></li>
-    <li class="nav-item"><a href="/morse.html">莫尔斯电码</a></li>
-    <li class="nav-item"><a
-            href="/crtirgen.html">中国铁路行程信息提示生成器(CRTIRGen)</a></li>
+    <li class="nav-item" onmouseover="showMenu(1)" onmouseout="hideMenu(1)">
+        <a href="#">项目</a>
+        <ul class="submenu-container" id="submenu-container1">
+            <li class="submenu-item"><a href="/pinball.html">JS弹球</a></li>
+            <li class="submenu-item"><a href="/morse.html">莫尔斯电码</a></li>
+            <li class="submenu-item"><a href="/crtirgen.html">中国铁路行程信息提示生成器(CRTIRGen)</a></li>
+        </ul>
+    </li>
     <li class="nav-item"><a href="/articles.html">文章</a></li>
     <li class="nav-item"><a href="/about.html">关于</a></li>
-    <li class="nav-item submenu" onmouseover="showMenu()" onmouseout="hideMenu()">
+    <li class="nav-item" onmouseover="showMenu(2)" onmouseout="hideMenu(2)">
         <a href="#">旅行</a>
-        <ul class="submenu-container" id="submenu-container">
+        <ul class="submenu-container" id="submenu-container2">
             <li class="submenu-item"><a href="https://www.travellings.cn/go.html">开往</a></li>
             <li class="submenu-item"><a href="https://travel.moe/go.html">异次元之旅</a></li>
         </ul>
