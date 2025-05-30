@@ -23,11 +23,11 @@
                 $.ajax({
                     url: '/articles/', // 注意：此处 URL 为目录列表页面的地址
                     method: 'GET',
-                    success: function(data){
+                    success: function (data) {
                         // 将返回的 HTML 数据包装到临时容器中以便解析
                         let $tempContainer = $('<div>').html(data);
                         // 解析目录列表页面中 <pre> 标签内的所有 <a> 标签
-                        $tempContainer.find('pre a').each(function(){
+                        $tempContainer.find('pre a').each(function () {
                             let href = $(this).attr('href');
                             // 过滤掉指向上级目录的链接，并且只保留以 .md 结尾的文件
                             if (href && href !== '../' && href.toLowerCase().endsWith('.md')) {
@@ -40,7 +40,7 @@
                             }
                         });
                     },
-                    error: function(xhr, status, error){
+                    error: function (xhr, status, error) {
                         console.error('加载目录列表失败：', error);
                     }
                 });
@@ -53,7 +53,7 @@
                     $articleDiv.html('<h2>欢迎来到文章页面</h2>');
                 } else {
                     // 构造 Markdown 文件路径，假设文件名为 articleParam.md
-                    let filePath = "/articles/"+articleParam;
+                    let filePath = "/articles/" + articleParam;
 
                     // 使用 AJAX 请求加载 Markdown 文件
                     $.ajax({
@@ -74,32 +74,24 @@
             });
 		</script>
 		<style>
-            .textbox{
-                max-width: 60%;
-            }
             .articleText img {
                 max-width: 100%;
-                height: auto;      /* 高度自动，以保持宽高比例 */
+                height: auto; /* 高度自动，以保持宽高比例 */
             }
 		</style>
 	</head>
 	<body class="body" id="body">
 		<nav class="navi"></nav>
-		<div>
-			<h1>
-				文章
-			</h1>
-			<div class="textbox-container">
-				<div class="row textbox">
-					<div class="column2 articleText"></div>
-				</div>
-				<div class="row textbox">
-					<h2>文章列表</h2>
-					<ul class="articleList">
-
-					</ul>
-				</div>
-
+		<h1>
+			文章
+		</h1>
+		<div class="textbox-container">
+			<div class="row textbox">
+				<h2>文章列表</h2>
+				<ul class="articleList"></ul>
+			</div>
+			<div class="row textbox">
+				<div class="column2 articleText"></div>
 			</div>
 		</div>
 		<footer class="site-footer"></footer>

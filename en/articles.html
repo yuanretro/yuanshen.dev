@@ -24,11 +24,11 @@
                 $.ajax({
                     url: '/en/articles/', // Address of articles list
                     method: 'GET',
-                    success: function(data){
+                    success: function (data) {
                         // Temporarily contain returned HTML data in a container
                         let $tempContainer = $('<div>').html(data);
                         // Interpret all <a> tabs inside tab <pre>
-                        $tempContainer.find('pre a').each(function(){
+                        $tempContainer.find('pre a').each(function () {
                             let href = $(this).attr('href');
                             // Keep only files that end with .md
                             if (href && href !== '../' && href.toLowerCase().endsWith('.md')) {
@@ -41,7 +41,7 @@
                             }
                         });
                     },
-                    error: function(xhr, status, error){
+                    error: function (xhr, status, error) {
                         console.error('Failed to load contents: ', error);
                     }
                 });
@@ -54,7 +54,7 @@
                     $articleDiv.html('<h2>Welcome to articles</h2>');
                 } else {
                     // Construct Markdown file path
-                    let filePath = "/en/articles/"+articleParam;
+                    let filePath = "/en/articles/" + articleParam;
 
                     // Load Markdown files with Ajax requests
                     $.ajax({
@@ -75,32 +75,24 @@
             });
 		</script>
 		<style>
-            .textbox{
-                max-width: 60%;
-            }
             .articleText img {
                 max-width: 100%;
-                height: auto;      /* Auto Height*/
+                height: auto; /* Auto Height*/
             }
 		</style>
 	</head>
 	<body class="body" id="body">
 		<nav class="navi"></nav>
-		<div>
-			<h1>
-				Articles
-			</h1>
-			<div class="textbox-container">
-				<div class="row textbox">
-					<div class="column2 articleText"></div>
-				</div>
-				<div class="row textbox">
-					<h2>Article List</h2>
-					<ul class="articleList">
-
-					</ul>
-				</div>
-
+		<h1>
+			Articles
+		</h1>
+		<div class="textbox-container">
+			<div class="row textbox">
+				<h2>Article List</h2>
+				<ul class="articleList"></ul>
+			</div>
+			<div class="row textbox">
+				<div class="column2 articleText"></div>
 			</div>
 		</div>
 		<footer class="site-footer"></footer>

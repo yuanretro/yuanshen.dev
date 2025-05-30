@@ -321,6 +321,7 @@ h1 {
 
     .navi {
         padding: 5px 10px; /* 减少导航栏内边距 */
+        text-align: center; /* 文字居中对齐 */
     }
 
     .navi ul {
