@@ -3,4 +3,4 @@
 ![Paimon](/img/paimon.png)<br>
 Ciallo～(∠・ω< )⌒★
 
-This is a test article. If you have seen this page, then marked.js is working fine on your system. 
+This is a test article. If you can see this page, then marked.js is working fine on your system. 

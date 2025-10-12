@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>YuanRetro-网格定位</title>
+        <link rel="stylesheet" href="/style.css">
+        <script src="/jquery-3.7.1.min.js"></script>
+        <script type="module" src="https://ajax.googleapis.com/ajax/libs/@googlemaps/extended-component-library/0.6.11/index.min.js"></script>
+        <link rel="icon" href="/img/nahida.png" type="image/x-icon">
+        <style>
+            .textbox-container {
+                display: flex;
+                gap: 10px;
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+            html,
+            body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            .place-picker-container {
+                padding: 20px;
+            }
+        </style>
+    </head>
+    <body class="body" id="body">
+        <gmpx-api-loader key="AIzaSyAGmM6PdpyKyKoqT54de8MPMTJ73DVyMMM" solution-channel="GMP_GE_mapsandplacesautocomplete_v2"></gmpx-api-loader>
+        <nav class="navi"></nav>
+        <h1>网格定位器</h1>
+        <gmp-map center="40.749933,-73.98633" zoom="13" map-id="GridLocatorMap">
+            <div slot="control-block-start-inline-start" class="place-picker-container">
+                <gmpx-place-picker placeholder="Enter an address"></gmpx-place-picker>
+            </div>
+            <gmp-advanced-marker></gmp-advanced-marker>
+        </gmp-map>
+        <div class="textbox-container">
+            <div class="textbox">
+
+            </div>
+        </div>
+        <script src="./gridmap.js"></script>
+        <footer class="site-footer"></footer>
+        <script>
+            $(document).ready(function () {
+                // Load footer
+                $(".site-footer").load("./footer.html");
+                // Load navigation bar
+                $(".navi").load("./navi.html");
+            });
+        </script>
+        <script type="text/javascript" src="/footer.js"></script>
+    </body>
+</html>
