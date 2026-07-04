@@ -142,7 +142,7 @@ function pyLocation(lastPointer, turn) {
         return lastPointer - 125 / 2 - (trainNumber.length / 2) * 13 - 5;
     } else if (turn === 3) {
         //计算到达站拼音位置
-        return (lastPointer + 30 - temp) / 2 + temp - (depPy.length / 2) * 13 - 5;
+        return (lastPointer + 30 - temp) / 2 + temp - (depPy.length / 2) * 13 - 40;
     }
 }
 
