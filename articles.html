@@ -1,100 +1,108 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>YuanRetro-文章</title>
-		<link rel="stylesheet" href="/style.css">
-		<script src="/jquery-3.7.1.min.js"></script>
-		<link rel="icon" href="/img/nahida.png" type="image/x-icon">
-		<script src="/marked.min.js"></script>
-		<script>
-            function getQueryParam(name) {
-                let urlParams = new URLSearchParams(window.location.search);
-                return urlParams.get(name);
-            }
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>YuanRetro-文章</title>
+	<link rel="stylesheet" href="/style.css">
+	<script src="/jquery-3.7.1.min.js"></script>
+	<link rel="icon" href="/img/nahida.png" type="image/x-icon">
+	<script src="/marked.min.js"></script>
+	<script>
+		function getQueryParam(name) {
+			let urlParams = new URLSearchParams(window.location.search);
+			return urlParams.get(name);
+		}
 
-            $(document).ready(function () {
-                // 加载底边栏内容
-                $(".site-footer").load("/footer.html");
-                // 加载顶边栏内容
-                $(".navi").load("/navi.html");
-                // 加载文章列表
-                $.ajax({
-                    url: '/articles/', // 注意：此处 URL 为目录列表页面的地址
-                    method: 'GET',
-                    success: function (data) {
-                        // 将返回的 HTML 数据包装到临时容器中以便解析
-                        let $tempContainer = $('<div>').html(data);
-                        // 解析目录列表页面中 <pre> 标签内的所有 <a> 标签
-                        $tempContainer.find('pre a').each(function () {
-                            let href = $(this).attr('href');
-                            // 过滤掉指向上级目录的链接，并且只保留以 .md 结尾的文件
-                            if (href && href !== '../' && href.toLowerCase().endsWith('.md')) {
-                                // 构造链接：访问 articles.html 时传递 article 参数（包含 .md 后缀）
-                                let linkUrl = './articles.html?article=' + encodeURIComponent(href);
-                                // 以链接文本显示文件名称（你也可以使用 decodeURIComponent(href)）
-                                let fileName = $(this).text().slice(0, -3);
-                                // 将构造好的链接添加到 .articleList 列表中
-                                $('.articleList').append('<li><a href="' + linkUrl + '">' + fileName + '</a></li>');
-                            }
-                        });
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('加载目录列表失败：', error);
-                    }
-                });
+		$(document).ready(function () {
+			// 加载底边栏内容
+			$(".site-footer").load("/footer.html");
+			// 加载顶边栏内容
+			$(".navi").load("/navi.html");
+			// 加载文章列表
+			$.ajax({
+				url: '/articles/', // 注意：此处 URL 为目录列表页面的地址
+				method: 'GET',
+				success: function (data) {
+					// 将返回的 HTML 数据包装到临时容器中以便解析
+					let $tempContainer = $('<div>').html(data);
+					// 兼容 nginx（<pre>）和 Apache（<ul> 或 <table>）的目录列表：查找所有 <a>
+					let seen = {};
+					$tempContainer.find('a').each(function () {
+						let href = $(this).attr('href');
+						if (!href) return;
+						// 去掉 ?C=N;O=D 之类的排序参数和路径前缀，只保留文件名
+						href = href.split('?')[0].split('#')[0];
+						href = href.substring(href.lastIndexOf('/') + 1);
+						// 只保留以 .md 结尾的文件，并去重
+						if (!href.toLowerCase().endsWith('.md') || seen[href]) return;
+						seen[href] = true;
+						// href 已经是 URL 编码过的，解码后得到真实文件名
+						let realName;
+						try { realName = decodeURIComponent(href); } catch (e) { realName = href; }
+						let linkUrl = './articles.html?article=' + encodeURIComponent(realName);
+						// Apache 会截断过长的链接文字，所以用文件名而不是链接文字显示
+						let fileName = realName.slice(0, -3);
+						// 用 .text() 插入，避免文件名里的特殊字符破坏页面
+						let $a = $('<a>').attr('href', linkUrl).text(fileName);
+						$('.articleList').append($('<li>').append($a));
+					});
+				},
+				error: function (xhr, status, error) {
+					console.error('加载目录列表失败：', error);
+				}
+			});
 
-                // 加载文章
-                let articleParam = getQueryParam('article');  // 获取 article 参数
-                let $articleDiv = $('.articleText');
-                if (!articleParam) {
-                    // 如果 article 参数为空，则显示默认页面内容
-                    $articleDiv.html('<h2>欢迎来到文章页面</h2>');
-                } else {
-                    // 构造 Markdown 文件路径，假设文件名为 articleParam.md
-                    let filePath = "/articles/" + articleParam;
+			// 加载文章
+			let articleParam = getQueryParam('article');  // 获取 article 参数
+			let $articleDiv = $('.articleText');
+			if (!articleParam) {
+				// 如果 article 参数为空，则显示默认页面内容
+				$articleDiv.html('<h2>欢迎来到文章页面</h2>');
+			} else {
+				// 构造 Markdown 文件路径，假设文件名为 articleParam.md
+				let filePath = "/articles/" + encodeURIComponent(articleParam);
 
-                    // 使用 AJAX 请求加载 Markdown 文件
-                    $.ajax({
-                        url: filePath,
-                        dataType: 'text',
-                        success: function (markdownText) {
-                            // 使用 marked 库将 Markdown 转换成 HTML
+				// 使用 AJAX 请求加载 Markdown 文件
+				$.ajax({
+					url: filePath,
+					dataType: 'text',
+					success: function (markdownText) {
+						// 使用 marked 库将 Markdown 转换成 HTML
 
-                            let htmlContent = marked.parse(markdownText);
-                            // 将转换后的 HTML 嵌入到 .articleText 容器中
-                            $articleDiv.html(htmlContent);
-                        },
-                        error: function () {
-                            $articleDiv.html('<p>无法加载文章 "' + articleParam + '"，请检查文件是否存在。</p>');
-                        }
-                    });
-                }
-            });
-		</script>
-		<style>
-            .articleText img {
-                max-width: 100%;
-                height: auto; /* 高度自动，以保持宽高比例 */
-            }
-		</style>
-	</head>
-	<body class="body" id="body">
-		<nav class="navi"></nav>
-		<h1>
-			文章
-		</h1>
-		<div class="textbox-container">
-			<div class="row textbox">
-				<h2>文章列表</h2>
-				<ul class="articleList"></ul>
-			</div>
-			<div class="row textbox">
-				<div class="column2 articleText"></div>
-			</div>
-		</div>
-		<footer class="site-footer"></footer>
-		<script type="text/javascript" src="/footer.js"></script>
-	</body>
+						let htmlContent = marked.parse(markdownText);
+						// 将转换后的 HTML 嵌入到 .articleText 容器中
+						$articleDiv.html(htmlContent);
+					},
+					error: function () {
+						$articleDiv.empty().append($('<p>').text('无法加载文章 "' + articleParam + '"，请检查文件是否存在。'));
+					}
+				});
+			}
+		});
+	</script>
+	<style>
+		.articleText img {
+			max-width: 100%;
+			height: auto; /* 高度自动，以保持宽高比例 */
+		}
+	</style>
+</head>
+<body class="body" id="body">
+<nav class="navi"></nav>
+<h1>
+	文章
+</h1>
+<div class="textbox-container">
+	<div class="row textbox">
+		<h2>文章列表</h2>
+		<ul class="articleList"></ul>
+	</div>
+	<div class="row textbox">
+		<div class="column2 articleText"></div>
+	</div>
+</div>
+<footer class="site-footer"></footer>
+<script type="text/javascript" src="/footer.js"></script>
+</body>
 </html>

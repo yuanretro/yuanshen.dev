@@ -1,101 +1,109 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>YuanRetro-Articles</title>
-		<link rel="stylesheet" href="/style.css">
-		<script src="/jquery-3.7.1.min.js"></script>
-		<link rel="icon" href="/img/nahida.png" type="image/x-icon">
-		<script src="/marked.min.js"></script>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>YuanRetro-Articles</title>
+	<link rel="stylesheet" href="/style.css">
+	<script src="/jquery-3.7.1.min.js"></script>
+	<link rel="icon" href="/img/nahida.png" type="image/x-icon">
+	<script src="/marked.min.js"></script>
 
-		<script>
-            function getQueryParam(name) {
-                let urlParams = new URLSearchParams(window.location.search);
-                return urlParams.get(name);
-            }
+	<script>
+		function getQueryParam(name) {
+			let urlParams = new URLSearchParams(window.location.search);
+			return urlParams.get(name);
+		}
 
-            $(document).ready(function () {
-                // Load footer
-                $(".site-footer").load("/en/footer.html");
-                // Load navigation bar
-                $(".navi").load("/en/navi.html");
-                // Load articles list
-                $.ajax({
-                    url: '/en/articles/', // Address of articles list
-                    method: 'GET',
-                    success: function (data) {
-                        // Temporarily contain returned HTML data in a container
-                        let $tempContainer = $('<div>').html(data);
-                        // Interpret all <a> tabs inside tab <pre>
-                        $tempContainer.find('pre a').each(function () {
-                            let href = $(this).attr('href');
-                            // Keep only files that end with .md
-                            if (href && href !== '../' && href.toLowerCase().endsWith('.md')) {
-                                // Construct link to each article
-                                let linkUrl = './articles.html?article=' + encodeURIComponent(href);
-                                // Display article name with hyperlink text
-                                let fileName = $(this).text().slice(0, -3);
-                                // Append the link into .articleList
-                                $('.articleList').append('<li><a href="' + linkUrl + '">' + fileName + '</a></li>');
-                            }
-                        });
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Failed to load contents: ', error);
-                    }
-                });
+		$(document).ready(function () {
+			// Load footer
+			$(".site-footer").load("/en/footer.html");
+			// Load navigation bar
+			$(".navi").load("/en/navi.html");
+			// Load articles list
+			$.ajax({
+				url: '/en/articles/', // Address of articles list
+				method: 'GET',
+				success: function (data) {
+					// Temporarily contain returned HTML data in a container
+					let $tempContainer = $('<div>').html(data);
+					// Works with both nginx (<pre>) and Apache (<ul> / <table>) directory listings
+					let seen = {};
+					$tempContainer.find('a').each(function () {
+						let href = $(this).attr('href');
+						if (!href) return;
+						// Strip sort parameters like ?C=N;O=D and any path prefix, keep only the file name
+						href = href.split('?')[0].split('#')[0];
+						href = href.substring(href.lastIndexOf('/') + 1);
+						// Keep only .md files, skip duplicates
+						if (!href.toLowerCase().endsWith('.md') || seen[href]) return;
+						seen[href] = true;
+						// href is URL-encoded; decode to get the real file name
+						let realName;
+						try { realName = decodeURIComponent(href); } catch (e) { realName = href; }
+						// Construct link to each article
+						let linkUrl = './articles.html?article=' + encodeURIComponent(realName);
+						// Apache truncates long link text, so display the file name instead
+						let fileName = realName.slice(0, -3);
+						// Insert as text so special characters can't break the page
+						let $a = $('<a>').attr('href', linkUrl).text(fileName);
+						$('.articleList').append($('<li>').append($a));
+					});
+				},
+				error: function (xhr, status, error) {
+					console.error('Failed to load contents: ', error);
+				}
+			});
 
-                // Load articles
-                let articleParam = getQueryParam('article');  // Get articles parameter
-                let $articleDiv = $('.articleText');
-                if (!articleParam) {
-                    // Display default contents if no articles present
-                    $articleDiv.html('<h2>Welcome to articles</h2>');
-                } else {
-                    // Construct Markdown file path
-                    let filePath = "/en/articles/" + articleParam;
+			// Load articles
+			let articleParam = getQueryParam('article');  // Get articles parameter
+			let $articleDiv = $('.articleText');
+			if (!articleParam) {
+				// Display default contents if no articles present
+				$articleDiv.html('<h2>Welcome to articles</h2>');
+			} else {
+				// Construct Markdown file path
+				let filePath = "/en/articles/" + encodeURIComponent(articleParam);
 
-                    // Load Markdown files with Ajax requests
-                    $.ajax({
-                        url: filePath,
-                        dataType: 'text',
-                        success: function (markdownText) {
-                            // Translate Markdown into HTML with marked.js
-
-                            let htmlContent = marked.parse(markdownText);
-                            // Embed translated text into .articleText
-                            $articleDiv.html(htmlContent);
-                        },
-                        error: function () {
-                            $articleDiv.html('<p>Unable to load article "' + articleParam + '", please check if the file is present.</p>');
-                        }
-                    });
-                }
-            });
-		</script>
-		<style>
-            .articleText img {
-                max-width: 100%;
-                height: auto; /* Auto Height*/
-            }
-		</style>
-	</head>
-	<body class="body" id="body">
-		<nav class="navi"></nav>
-		<h1>
-			Articles
-		</h1>
-		<div class="textbox-container">
-			<div class="row textbox">
-				<h2>Article List</h2>
-				<ul class="articleList"></ul>
-			</div>
-			<div class="row textbox">
-				<div class="column2 articleText"></div>
-			</div>
-		</div>
-		<footer class="site-footer"></footer>
-		<script type="text/javascript" src="/footer.js"></script>
-	</body>
+				// Load Markdown files with Ajax requests
+				$.ajax({
+					url: filePath,
+					dataType: 'text',
+					success: function (markdownText) {
+						// Translate Markdown into HTML with marked.js
+						let htmlContent = marked.parse(markdownText);
+						// Embed translated text into .articleText
+						$articleDiv.html(htmlContent);
+					},
+					error: function () {
+						$articleDiv.empty().append($('<p>').text('Unable to load article "' + articleParam + '", please check if the file is present.'));
+					}
+				});
+			}
+		});
+	</script>
+	<style>
+		.articleText img {
+			max-width: 100%;
+			height: auto; /* Auto Height*/
+		}
+	</style>
+</head>
+<body class="body" id="body">
+<nav class="navi"></nav>
+<h1>
+	Articles
+</h1>
+<div class="textbox-container">
+	<div class="row textbox">
+		<h2>Article List</h2>
+		<ul class="articleList"></ul>
+	</div>
+	<div class="row textbox">
+		<div class="column2 articleText"></div>
+	</div>
+</div>
+<footer class="site-footer"></footer>
+<script type="text/javascript" src="/footer.js"></script>
+</body>
 </html>
